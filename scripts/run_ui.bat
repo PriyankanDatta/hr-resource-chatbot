@@ -1,0 +1,3 @@
+@echo off
+echo Starting Streamlit app on http://localhost:8501 ...
+streamlit run ui/app.py
