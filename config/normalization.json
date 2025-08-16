@@ -1,0 +1,40 @@
+{
+  "lowercase": true,
+  "trim_whitespace": true,
+  "collapse_spaces": true,
+  "punctuation_chars_to_strip": [",", ".", "!", "?", ":", ";"],
+  "stopwords": ["please", "need", "looking", "for", "with", "and", "or", "a", "an", "the"],
+  "skill_aliases": {
+    "ml": "machine learning",
+    "dl": "deep learning",
+    "js": "javascript",
+    "ts": "typescript",
+    "reactnative": "react native",
+    "node": "node.js",
+    "pgsql": "postgres",
+    "postgresql": "postgres",
+    "gcp": "gcp",
+    "aws cloud": "aws",
+    "azure cloud": "azure"
+  },
+  "domain_aliases": {
+    "e-comm": "ecommerce",
+    "e-commerce": "ecommerce",
+    "e commerce": "ecommerce",
+    "health": "healthcare",
+    "cv": "computer vision",
+    "nlp": "nlp",
+    "supplychain": "supply chain",
+    "mktg analytics": "marketing analytics"
+  },
+  "availability_aliases": {
+    "free now": "available",
+    "available now": "available",
+    "next month": "soon",
+    "not free": "unavailable"
+  },
+  "min_experience_patterns": [
+    "(\\d+)\\+?\\s*(years|yrs|yrs\\.|yr)",
+    "at\\s*least\\s*(\\d+)\\s*(years|yrs)"
+  ]
+}
