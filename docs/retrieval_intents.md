@@ -12,3 +12,20 @@
 - PTO calendars
 - Real HRIS fields (pulling live HR data)
 - Location-based legal constraints
+
+
+---
+
+## Supported filters (v1)
+
+- skills (exact/alias-normalized string match)  
+- min_experience_years (≥ integer)  
+- domains (alias-normalized)  
+- availability ∈ {"available","soon","unavailable"}  
+
+## Not supported (v1)
+
+- location radius  
+- certifications filtering  
+- project recency  
+
