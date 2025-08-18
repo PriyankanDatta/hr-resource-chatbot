@@ -25,7 +25,8 @@
     "cv": "computer vision",
     "nlp": "nlp",
     "supplychain": "supply chain",
-    "mktg analytics": "marketing analytics"
+    "mktg analytics": "marketing analytics",
+    "backend": "backend"
   },
   "availability_aliases": {
     "free now": "available",

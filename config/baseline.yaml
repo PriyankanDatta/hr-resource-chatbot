@@ -1,0 +1,7 @@
+weights:
+  skills: 3
+  domains: 2
+  projects: 1
+
+min_token_match: 1
+top_k: 5
