@@ -1,0 +1,13 @@
+{
+  "queries": [
+    "python aws 3+ years ecommerce",
+    "react native mobile app 4+ years",
+    "available healthcare nlp",
+    "backend docker postgres",
+    "computer vision retail",
+    "azure databricks pyspark 5+",
+    "frontend typescript next.js",
+    "gcp bigquery dbt marketing analytics"
+  ],
+  "notes": "Spec-only inputs. Normalize + apply filters before scoring."
+}
