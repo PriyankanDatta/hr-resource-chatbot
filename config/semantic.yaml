@@ -1,0 +1,10 @@
+model: text-embedding-3-large
+index_type: IndexFlatIP
+top_k: 5
+hybrid_weights:
+  semantic: 0.6
+  keyword: 0.4
+outputs:
+  faiss: data/employee_index.faiss
+  meta:  data/employee_meta.json
+  stats: data/employee_index.stats.json
