@@ -1,0 +1,7 @@
+{
+  "built_at": "2025-08-19T20:50:31Z",
+  "model": "text-embedding-3-large",
+  "embedding_dim": 3072,
+  "num_items": 20,
+  "faiss_index": "IndexFlatIP"
+}

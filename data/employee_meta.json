@@ -1,0 +1,445 @@
+[
+  {
+    "row_id": 0,
+    "employee_id": 1,
+    "name": "Alice Johnson",
+    "top_fields": {
+      "skills": [
+        "python",
+        "sql",
+        "pandas",
+        "aws",
+        "docker",
+        "fastapi"
+      ],
+      "domains": [
+        "fintech",
+        "ecommerce",
+        "analytics"
+      ],
+      "availability": "available",
+      "experience_years": 5
+    }
+  },
+  {
+    "row_id": 1,
+    "employee_id": 2,
+    "name": "Bob Smith",
+    "top_fields": {
+      "skills": [
+        "react",
+        "typescript",
+        "node.js",
+        "graphql",
+        "jest",
+        "docker"
+      ],
+      "domains": [
+        "healthcare",
+        "ecommerce",
+        "supply chain"
+      ],
+      "availability": "soon",
+      "experience_years": 3
+    }
+  },
+  {
+    "row_id": 2,
+    "employee_id": 3,
+    "name": "Chitra Menon",
+    "top_fields": {
+      "skills": [
+        "python",
+        "sklearn",
+        "pytorch",
+        "pandas",
+        "mlflow",
+        "airflow"
+      ],
+      "domains": [
+        "fintech",
+        "retail",
+        "recommendations"
+      ],
+      "availability": "available",
+      "experience_years": 6
+    }
+  },
+  {
+    "row_id": 3,
+    "employee_id": 4,
+    "name": "Diego Alvarez",
+    "top_fields": {
+      "skills": [
+        "java",
+        "spring boot",
+        "kafka",
+        "postgres",
+        "docker",
+        "kubernetes"
+      ],
+      "domains": [
+        "retail",
+        "supply chain",
+        "ecommerce",
+        "backend"
+      ],
+      "availability": "unavailable",
+      "experience_years": 7
+    }
+  },
+  {
+    "row_id": 4,
+    "employee_id": 5,
+    "name": "Elena Petrova",
+    "top_fields": {
+      "skills": [
+        "react native",
+        "react",
+        "typescript",
+        "redux",
+        "figma",
+        "cypress"
+      ],
+      "domains": [
+        "logistics",
+        "healthcare",
+        "ecommerce"
+      ],
+      "availability": "available",
+      "experience_years": 4
+    }
+  },
+  {
+    "row_id": 5,
+    "employee_id": 6,
+    "name": "Farhan Khan",
+    "top_fields": {
+      "skills": [
+        "python",
+        "nlp",
+        "spacy",
+        "transformers",
+        "fastapi",
+        "postgres"
+      ],
+      "domains": [
+        "nlp",
+        "finance ops",
+        "support"
+      ],
+      "availability": "soon",
+      "experience_years": 5
+    }
+  },
+  {
+    "row_id": 6,
+    "employee_id": 7,
+    "name": "Grace Lee",
+    "top_fields": {
+      "skills": [
+        "aws",
+        "lambda",
+        "dynamodb",
+        "api gateway",
+        "terraform",
+        "python"
+      ],
+      "domains": [
+        "data engineering",
+        "retail",
+        "marketing analytics"
+      ],
+      "availability": "available",
+      "experience_years": 6
+    }
+  },
+  {
+    "row_id": 7,
+    "employee_id": 8,
+    "name": "Hiro Tanaka",
+    "top_fields": {
+      "skills": [
+        "gcp",
+        "bigquery",
+        "dbt",
+        "python",
+        "looker",
+        "airflow"
+      ],
+      "domains": [
+        "marketing analytics",
+        "ecommerce",
+        "data engineering"
+      ],
+      "availability": "unavailable",
+      "experience_years": 5
+    }
+  },
+  {
+    "row_id": 8,
+    "employee_id": 9,
+    "name": "Isabella Rossi",
+    "top_fields": {
+      "skills": [
+        "python",
+        "opencv",
+        "pytorch",
+        "onnx",
+        "numpy",
+        "fastapi"
+      ],
+      "domains": [
+        "computer vision",
+        "retail",
+        "manufacturing"
+      ],
+      "availability": "available",
+      "experience_years": 4
+    }
+  },
+  {
+    "row_id": 9,
+    "employee_id": 10,
+    "name": "Jamal Williams",
+    "top_fields": {
+      "skills": [
+        "sql",
+        "powerbi",
+        "python",
+        "pandas",
+        "dax",
+        "excel"
+      ],
+      "domains": [
+        "analytics",
+        "sales ops",
+        "retail"
+      ],
+      "availability": "soon",
+      "experience_years": 5
+    }
+  },
+  {
+    "row_id": 10,
+    "employee_id": 11,
+    "name": "Kavya Iyer",
+    "top_fields": {
+      "skills": [
+        "python",
+        "transformers",
+        "rag",
+        "faiss",
+        "langchain",
+        "fastapi"
+      ],
+      "domains": [
+        "nlp",
+        "legal tech",
+        "enterprise search"
+      ],
+      "availability": "available",
+      "experience_years": 5
+    }
+  },
+  {
+    "row_id": 11,
+    "employee_id": 12,
+    "name": "Liam O'Connor",
+    "top_fields": {
+      "skills": [
+        "azure",
+        "databricks",
+        "pyspark",
+        "delta lake",
+        "python",
+        "sql"
+      ],
+      "domains": [
+        "data engineering",
+        "ecommerce",
+        "advertising"
+      ],
+      "availability": "unavailable",
+      "experience_years": 7
+    }
+  },
+  {
+    "row_id": 12,
+    "employee_id": 13,
+    "name": "Maya Singh",
+    "top_fields": {
+      "skills": [
+        "python",
+        "sklearn",
+        "xgboost",
+        "mlflow",
+        "feature store",
+        "sql"
+      ],
+      "domains": [
+        "supply chain",
+        "retail",
+        "fintech"
+      ],
+      "availability": "available",
+      "experience_years": 6
+    }
+  },
+  {
+    "row_id": 13,
+    "employee_id": 14,
+    "name": "Nikolai Ivanov",
+    "top_fields": {
+      "skills": [
+        "go",
+        "grpc",
+        "kubernetes",
+        "prometheus",
+        "postgres",
+        "redis"
+      ],
+      "domains": [
+        "fintech",
+        "platform",
+        "observability",
+        "backend"
+      ],
+      "availability": "soon",
+      "experience_years": 8
+    }
+  },
+  {
+    "row_id": 14,
+    "employee_id": 15,
+    "name": "Olivia Chen",
+    "top_fields": {
+      "skills": [
+        "react",
+        "next.js",
+        "typescript",
+        "tailwind",
+        "playwright",
+        "node.js"
+      ],
+      "domains": [
+        "ecommerce",
+        "saas",
+        "marketing"
+      ],
+      "availability": "available",
+      "experience_years": 4
+    }
+  },
+  {
+    "row_id": 15,
+    "employee_id": 16,
+    "name": "Pedro Santos",
+    "top_fields": {
+      "skills": [
+        "python",
+        "airflow",
+        "snowflake",
+        "dbt",
+        "terraform",
+        "docker"
+      ],
+      "domains": [
+        "data engineering",
+        "finance ops",
+        "analytics"
+      ],
+      "availability": "unavailable",
+      "experience_years": 6
+    }
+  },
+  {
+    "row_id": 16,
+    "employee_id": 17,
+    "name": "Quinn Baker",
+    "top_fields": {
+      "skills": [
+        "python",
+        "sklearn",
+        "lightgbm",
+        "feature engineering",
+        "dash",
+        "sql"
+      ],
+      "domains": [
+        "marketing analytics",
+        "fintech",
+        "saas"
+      ],
+      "availability": "available",
+      "experience_years": 3
+    }
+  },
+  {
+    "row_id": 17,
+    "employee_id": 18,
+    "name": "Riya Kapoor",
+    "top_fields": {
+      "skills": [
+        "python",
+        "huggingface",
+        "rag",
+        "faiss",
+        "openai",
+        "streamlit"
+      ],
+      "domains": [
+        "nlp",
+        "enterprise search",
+        "support"
+      ],
+      "availability": "soon",
+      "experience_years": 5
+    }
+  },
+  {
+    "row_id": 18,
+    "employee_id": 19,
+    "name": "Sebastian Müller",
+    "top_fields": {
+      "skills": [
+        "python",
+        "opencv",
+        "yolo",
+        "pytorch",
+        "flask",
+        "aws s3"
+      ],
+      "domains": [
+        "computer vision",
+        "manufacturing",
+        "retail"
+      ],
+      "availability": "available",
+      "experience_years": 4
+    }
+  },
+  {
+    "row_id": 19,
+    "employee_id": 20,
+    "name": "Tara Ahmed",
+    "top_fields": {
+      "skills": [
+        "python",
+        "langchain",
+        "faiss",
+        "fastapi",
+        "postgres",
+        "docker"
+      ],
+      "domains": [
+        "nlp",
+        "legal tech",
+        "governance",
+        "backend"
+      ],
+      "availability": "available",
+      "experience_years": 5
+    }
+  }
+]
