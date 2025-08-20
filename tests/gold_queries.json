@@ -1,0 +1,16 @@
+{
+  "queries": [
+    "python aws 3+ years ecommerce",
+    "react native mobile app 4+ years",
+    "available healthcare nlp",
+    "backend docker postgres",
+    "computer vision retail",
+    "azure databricks pyspark 5+",
+    "frontend typescript next.js",
+    "gcp bigquery dbt marketing analytics",
+    "soon fintech python",
+    "unavailable data engineering airflow 6+"
+  ],
+  "k_values": [3, 5],
+  "notes": "Use for retrieval@k and latency tracking before/after generation."
+}
