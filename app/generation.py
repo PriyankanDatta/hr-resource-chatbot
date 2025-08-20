@@ -1,0 +1,98 @@
+# app/generation.py
+from __future__ import annotations
+import os, json
+from typing import Any, Dict, List, Optional
+from dotenv import load_dotenv
+from openai import OpenAI
+
+from app.config import load_yaml, repo_path
+from app.search.hybrid import hybrid_search
+
+load_dotenv()  # loads .env
+CHAT_MODEL = os.getenv("CHAT_MODEL", "gpt-4o-mini")
+
+GEN_CFG = load_yaml(repo_path("config", "generation.yaml"))
+
+def _summarize_request(query: str) -> str:
+    # Simple one-liner. (You can improve later with your normalization pipeline.)
+    return query.strip()
+
+def _pick_candidates(hybrid_result: Dict[str, Any], k: int) -> List[Dict[str, Any]]:
+    results = hybrid_result.get("results", [])
+    return results[:k]
+
+def _format_top_candidates_json(cands: List[Dict[str, Any]]) -> str:
+    # Min metadata to keep it grounded—extend if you’d like.
+    payload = []
+    for r in cands:
+        payload.append({
+            "id": r["id"],
+            "name": r["name"],
+            "hybrid_score": r.get("hybrid_score"),
+            # These come from earlier stages; for facts we’ll re-read employees.json later if you want.
+            "reason": r.get("reason_kw") or r.get("reason_sem") or "",
+        })
+    return json.dumps(payload, ensure_ascii=False, indent=2)
+
+def generate_response(query: str, top_k: Optional[int] = None) -> Dict[str, Any]:
+    k = top_k or int(GEN_CFG.get("k", 3))
+
+    # 1) Retrieve candidates via hybrid
+    hyb = hybrid_search(query, top_k=10)  # fetch a few more, we will slice to k
+    cands = _pick_candidates(hyb, k)
+
+    # Edge cases
+    if not cands:
+        text = (
+            f"I couldn’t find strong matches for “{query}”. "
+            "Want me to relax constraints (e.g., lower min years or include 'soon' availability)?"
+        )
+        return {"query": query, "used_candidate_ids": [], "response_text": text, "notes": "no_matches"}
+
+    # 2) Build prompt (from your Step 10 template)
+    request_summary = _summarize_request(query)
+    top_candidates_json = _format_top_candidates_json(cands)
+
+    max_words = int(GEN_CFG.get("max_words", 200))
+    next_steps_default = GEN_CFG.get("phrasing", {}).get(
+        "next_steps_default",
+        "Shall I widen skills or lower min years, or include 'soon' availability?"
+    )
+
+    system_msg = (
+        "You are an assistant that recommends employees for internal projects. "
+        "Ground every fact in the provided profiles. Do not invent facts. "
+        "If uncertain or results are weak, ask a clarifying question."
+    )
+    user_msg = (
+        f'Request: "{query}"\n\n'
+        f"Top candidates (JSON):\n{top_candidates_json}\n\n"
+        f"Constraints:\n"
+        f"- Use only the fields present.\n"
+        f"- Prefer availability=available, then soon, then unavailable.\n"
+        f"- Keep total reply under {max_words} words.\n"
+        f"- Suggest exactly {k} candidates when possible.\n\n"
+        "Write the response in this format:\n"
+        "1) One-line summary of the requirement.\n"
+        "2) 2–3 candidate lines (name — why fit — availability).\n"
+        "3) Next steps or a clarifying question if needed."
+    )
+
+    client = OpenAI()
+    resp = client.chat.completions.create(
+        model=CHAT_MODEL,
+        messages=[
+            {"role": "system", "content": system_msg},
+            {"role": "user", "content": user_msg},
+        ],
+        temperature=0.2,
+    )
+
+    text = resp.choices[0].message.content.strip() if resp.choices else "(no response)"
+
+    return {
+        "query": query,
+        "used_candidate_ids": [c["id"] for c in cands],
+        "response_text": text,
+        "notes": {"k": k, "max_words": max_words},
+    }

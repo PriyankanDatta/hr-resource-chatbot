@@ -1,9 +1,10 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, Body
 from typing import Optional
 
 from app.search.baseline import baseline_search
 from app.search.semantic import semantic_search
-from app.search.hybrid import hybrid_search  # NEW
+from app.search.hybrid import hybrid_search
+from app.generation import generate_response  # NEW
 
 app = FastAPI(title="HR Resource Chatbot API", version="0.1.0")
 
@@ -44,3 +45,17 @@ def search_hybrid_endpoint(
     Hybrid search: combines semantic similarity (FAISS) and keyword score per config/semantic.yaml (hybrid_weights).
     """
     return hybrid_search(q, top_k=top_k)
+
+@app.post("/generate")
+def generate(
+    q: str = Body(..., embed=True, description="User request text, e.g., 'python aws 3+ years ecommerce available'"),
+    top_k: Optional[int] = Body(None, embed=True),
+):
+    """
+    RAG generation endpoint:
+    - Calls hybrid retrieval
+    - Builds a grounded prompt (docs/prompt_template_generation.md)
+    - Calls CHAT_MODEL from .env
+    - Returns concise, grounded recommendation text
+    """
+    return generate_response(q, top_k=top_k)
