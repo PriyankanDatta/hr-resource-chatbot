@@ -1,0 +1,13 @@
+k: 3
+max_words: 200
+style:
+  tone: concise
+  bullets: true
+guards:
+  require_grounding: true
+  ask_clarify_if_few_matches: 2   # if <2 good matches, ask a question
+  mark_near_match_within_years: 1 # label “near match” if within 1y of threshold
+facts:
+  include_fields: [name, skills, domains, experience_years, availability]
+phrasing:
+  next_steps_default: "Shall I widen skills or lower min years, or include 'soon' availability?"
