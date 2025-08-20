@@ -43,3 +43,10 @@ Ideas for further work.
 
 ## Demo
 Link to live demo or screenshots.
+
+## Evaluation
+
+We maintain a small evaluation plan and gold query set to track performance of the search and generation system.
+
+- [Evaluation Plan](tests/eval_plan.md): metrics, latency, and logging format  
+- [Gold Queries](tests/gold_queries.json): 10–15 representative test queries for skills, domains, experience, and availability
