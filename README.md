@@ -1,20 +1,23 @@
 # HR Resource Query Chatbot
 
 ## Overview
-Brief description of the project and its goal.
+For HRs to query candidates.
 
 ## Features
-- Feature 1
-- Feature 2
+- Keyword search (baseline)
+- Semantic search with embeddings (FAISS)
+- Hybrid retrieval
+- RAG generation with guardrails
+- Streamlit UI
 
 ## Architecture
 Overview of system components.
 
 ## Setup & Installation
-Steps to run the project locally.
+(Conda env, pip install -r requirements.txt, run_api.bat, run_ui.bat.)
 
 ## API Documentation
-Endpoint descriptions and examples.
+(Link to FastAPI auto-docs: `http://127.0.0.1:8000/docs`.)
 
 ## AI Development Process
 How AI tools were used in development.
