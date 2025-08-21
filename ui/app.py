@@ -113,6 +113,10 @@ if go:
 
         # Response block
         resp_text = chat_out.get("response_text", "").strip()
+        notes = chat_out.get("notes", {})  # NEW
+        if notes.get("fallback"):          # NEW
+            st.warning("Generation failed; showing retrieved candidates instead.")
+
         if resp_text:
             st.success("Response")
             st.write(resp_text)
