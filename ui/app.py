@@ -8,37 +8,7 @@ API_BASE = os.environ.get("API_BASE", "http://127.0.0.1:8000")
 st.set_page_config(page_title="HR Resource Chatbot", layout="centered")
 st.title("HR Resource Chatbot")
 
-# ---------- Sidebar Filters ----------
-with st.sidebar:
-    st.subheader("Filters (optional)")
-    skill = st.text_input("Skill")
-    min_exp = st.number_input("Min years", min_value=0, step=1)
-    domain = st.text_input("Domain")
-    availability = st.selectbox("Availability", ["", "available", "soon", "unavailable"])
-    top_k = st.slider("Candidates (k)", 1, 10, 3)
-
-st.markdown("Type a requirement, e.g. **python aws 3+ years ecommerce available**")
-
-query = st.text_input(
-    "Your request",
-    key="query",
-    placeholder="e.g., backend docker postgres 3+ years available"
-)
-go = st.button("Send")
-
-# ---------- Helpers ----------
-def build_query_with_filters(q: str) -> str:
-    parts = [q.strip()]
-    if skill:
-        parts.append(skill)
-    if min_exp:
-        parts.append(f"{int(min_exp)}+ years")
-    if domain:
-        parts.append(domain)
-    if availability:
-        parts.append(availability)
-    return " ".join([p for p in parts if p])
-
+# ---------- Backend clients ----------
 def call_chat(q: str, k: int):
     url = f"{API_BASE}/chat"
     payload = {"query": q, "top_k": k}
@@ -53,14 +23,25 @@ def call_hybrid(q: str, k: int):
     r.raise_for_status()
     return r.json()
 
-def call_keyword_list():
+def call_keyword_list(
+    selected_skills: list[str],
+    min_exp: int,
+    selected_domains: list[str],
+    availability: str,
+    top_k: int,
+):
+    """
+    Uses the param-based wrapper /employees/search.
+    NOTE: It accepts single skill/domain, so we pass the FIRST selected one (if any)
+    just to fetch a 'why matched' reason for card display.
+    """
     params = {}
-    if skill:
-        params["skill"] = skill
+    if selected_skills:
+        params["skill"] = selected_skills[0]
     if min_exp:
         params["min_experience"] = int(min_exp)
-    if domain:
-        params["domain"] = domain
+    if selected_domains:
+        params["domain"] = selected_domains[0]
     if availability:
         params["availability"] = availability
     params["top_k"] = top_k
@@ -68,6 +49,80 @@ def call_keyword_list():
     r = requests.get(url, params=params, timeout=60)
     r.raise_for_status()
     return r.json()
+
+def call_facets():
+    url = f"{API_BASE}/metadata/facets"
+    r = requests.get(url, timeout=30)
+    r.raise_for_status()
+    return r.json()
+
+# Cache facets so the UI is snappy
+@st.cache_data(ttl=300)
+def get_facets_cached():
+    return call_facets()
+
+# Try to load facets from backend; if it fails, we'll fall back to text inputs
+facets = {}
+skill_options: list[str] = []
+domain_options: list[str] = []
+avail_options: list[str] = ["available", "soon", "unavailable"]
+facets_ok = True
+try:
+    facets = get_facets_cached()
+    skill_options = facets.get("skills", [])
+    domain_options = facets.get("domains", [])
+    avail_options = facets.get("availability", avail_options)
+except Exception:
+    facets_ok = False
+
+# ---------- Sidebar Filters ----------
+with st.sidebar:
+    st.subheader("Filters (optional)")
+
+    if facets_ok:
+        # Dropdowns backed by backend facets
+        selected_skills = st.multiselect("Skills", options=skill_options, default=[])
+        selected_domains = st.multiselect("Domains", options=domain_options, default=[])
+    else:
+        # Graceful fallback to free-text if metadata endpoint fails
+        st.caption("Facets unavailable — falling back to text inputs.")
+        skill_text = st.text_input("Skill (text)")
+        selected_skills = [s.strip() for s in skill_text.split(",") if s.strip()] if skill_text else []
+        domain_text = st.text_input("Domain (text)")
+        selected_domains = [d.strip() for d in domain_text.split(",") if d.strip()] if domain_text else []
+
+    min_exp = st.number_input("Min years", min_value=0, step=1)
+
+    # Availability dropdown (prepend blank for 'no filter')
+    availability = st.selectbox(
+        "Availability",
+        [""] + avail_options if "" not in avail_options else avail_options
+    )
+
+    top_k = st.slider("Candidates (k)", 1, 10, 3)
+
+st.markdown("Type a requirement, e.g. **python aws 3+ years ecommerce available**")
+
+query = st.text_input(
+    "Your request",
+    key="query",
+    placeholder="e.g., backend docker postgres 3+ years available"
+)
+go = st.button("Send")
+
+# ---------- Helpers ----------
+def build_query_with_filters(q: str) -> str:
+    parts = [q.strip()]
+    # Include all selected facets (AND semantics in text)
+    for s in selected_skills:
+        parts.append(s)
+    if min_exp:
+        parts.append(f"{int(min_exp)}+ years")
+    for d in selected_domains:
+        parts.append(d)
+    if availability:
+        parts.append(availability)
+    return " ".join([p for p in parts if p])
 
 def render_candidate_card(c: dict):
     st.markdown("----")
@@ -113,8 +168,8 @@ if go:
 
         # Response block
         resp_text = chat_out.get("response_text", "").strip()
-        notes = chat_out.get("notes", {})  # NEW
-        if notes.get("fallback"):          # NEW
+        notes = chat_out.get("notes", {})
+        if notes.get("fallback"):
             st.warning("Generation failed; showing retrieved candidates instead.")
 
         if resp_text:
@@ -142,7 +197,13 @@ if go:
             # Try baseline wrapper to get 'why' if filters were set
             baseline_pool = {}
             try:
-                lst = call_keyword_list()
+                lst = call_keyword_list(
+                    selected_skills=selected_skills,
+                    min_exp=int(min_exp) if min_exp else 0,
+                    selected_domains=selected_domains,
+                    availability=availability,
+                    top_k=top_k,
+                )
                 baseline_pool = {c["id"]: c for c in lst.get("results", [])}
             except Exception:
                 baseline_pool = {}

@@ -8,6 +8,10 @@ from app.search.semantic import semantic_search
 from app.search.hybrid import hybrid_search
 from app.generation import generate_response
 
+from functools import lru_cache
+from app.config import repo_path, load_json
+
+
 # Logger for API observability
 logger = logging.getLogger("hrbot.api")
 
@@ -38,6 +42,61 @@ def health():
 @app.get("/")
 def root():
     return {"message": "Hello from FastAPI — backend is running!"}
+
+
+# ===== Facets (skills/domains) =====
+def _norm_token(s: str) -> str:
+    s = s.strip().lower()
+    s = re.sub(r"\s+", " ", s)
+    return s
+
+@lru_cache(maxsize=1)
+def _load_facets_cached():
+    # Load data + normalization rules
+    employees = load_json(repo_path("data", "employees.json")).get("employees", [])
+    norm = load_json(repo_path("config", "normalization.json"))
+    skill_aliases = { _norm_token(k): _norm_token(v) for k, v in norm.get("skill_aliases", {}).items() }
+    domain_aliases = { _norm_token(k): _norm_token(v) for k, v in norm.get("domain_aliases", {}).items() }
+
+    skills_set = set()
+    domains_set = set()
+
+    def canon_skill(tok: str) -> str:
+        t = _norm_token(tok)
+        return skill_aliases.get(t, t)
+
+    def canon_domain(tok: str) -> str:
+        t = _norm_token(tok)
+        return domain_aliases.get(t, t)
+
+    for emp in employees:
+        for sk in emp.get("skills", []) or []:
+            skills_set.add(canon_skill(sk))
+        for dm in emp.get("domains", []) or []:
+            domains_set.add(canon_domain(dm))
+
+    skills = sorted([s for s in skills_set if s])
+    domains = sorted([d for d in domains_set if d])
+
+    return {
+        "skills": skills,
+        "domains": domains,
+        "availability": ["available", "soon", "unavailable"],
+        "counts": {
+            "skills": len(skills),
+            "domains": len(domains),
+            "employees": len(employees)
+        }
+    }
+
+@app.get("/metadata/facets", tags=["metadata"])
+def get_facets():
+    """
+    Returns canonical lists of skills and domains for dropdowns, plus availability buckets.
+    Uses normalization/alias rules from config/normalization.json.
+    """
+    return _load_facets_cached()
+
 
 # ===== Search Endpoints =====
 @app.get("/search/keyword")
