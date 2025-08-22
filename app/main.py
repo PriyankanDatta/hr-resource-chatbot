@@ -11,11 +11,23 @@ from app.generation import generate_response
 from functools import lru_cache
 from app.config import repo_path, load_json
 
+from fastapi.middleware.cors import CORSMiddleware
+
+
 
 # Logger for API observability
 logger = logging.getLogger("hrbot.api")
 
 app = FastAPI(title="HR Resource Chatbot API", version="0.1.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],           # for hackathon; lock down later if you want
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # ===== Contract Models (for nicer OpenAPI + validation) =====
 class ChatRequest(BaseModel):
