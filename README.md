@@ -44,8 +44,20 @@ Why certain tools/libraries were chosen.
 ## Future Improvements
 Ideas for further work.
 
-## Demo
-Link to live demo or screenshots.
+
+## 🎬 Demo
+
+- **Live UI (Streamlit):** https://hr-resource-chatbot-6wgej3yfcpqe96icmpmxrp.streamlit.app/
+- **API (Render):** https://hr-resource-chatbot-42wb.onrender.com
+- **Docs (OpenAPI):** https://hr-resource-chatbot-42wb.onrender.com/docs
+
+### Run locally
+```bash
+# Terminal A: API
+scripts\run_api.bat
+
+# Terminal B: UI (local)
+scripts\run_ui.bat
 
 ## Evaluation
 
